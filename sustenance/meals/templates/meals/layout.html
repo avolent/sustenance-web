@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'meals/styles.css' %}" rel="stylesheet">
+        <script src="{% static 'meals/script.js' %}"></script>
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        {% block script %}
+        {% endblock %}
+    </head>
+    <body>
+        <div id="nav-bar" class="shadow">
+            <div class="nav-logo"><img src="{% static 'meals/images/meat.png' %}" alt="Logo"></div>
+            <div class="nav-item"><a class="nav-link" href=""><strong>Home</strong></a></div>
+            <div class="nav-item"><a class="nav-link" href=""><strong>Meals</strong></a></div>
+            <div class="nav-item"><a class="nav-link" href=""><strong>Ingredients</strong></a></div>
+            <div class="nav-space"></div>
+            {% if user.is_authenticated %}
+            <div class="nav-item"><a class="nav-link" href=""><strong>Account</strong></a></div>
+            <div class="nav-item"><a class="nav-link" href=""><strong>Logout</strong></a></div>
+            {% else %}
+            <div id='register' class="nav-item account"><strong>Register</strong></div>
+            <div id='login' class="nav-item account"><strong>Login</strong></div>
+            {% endif %}
+        </div>
+        <form id="account-form" class="account-form shadow" style="display: none;" method="POST" action="">
+            <label for="email"><b>Email</b></label>
+            <input autofocus  type="text" name="email" placeholder="Email">
+            <label for="password"><b>Password</b></label>
+            <input type="password" name="password" placeholder="Password">
+            <input id="account-submit" type="submit" value="Login">
+        </form>
+        {% block body %}
+        {% endblock %}
+    </body>
+
+</html>
