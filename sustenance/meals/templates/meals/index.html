@@ -4,9 +4,14 @@
 Meals
 {% endblock %}
 
+{% block message %}
+{% if message %}
+<div id="message">{{ message }}</div>
+{% endif %}
+{% endblock %}
 
 {% block body %}
 <div class="content">
-    <h1>Meals</h1>
+    <h1>About</h1>
 </div>
 {% endblock %}

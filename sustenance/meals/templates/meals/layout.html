@@ -12,27 +12,43 @@
         {% endblock %}
     </head>
     <body>
+        <div>
         <div id="nav-bar" class="shadow">
-            <div class="nav-logo"><img src="{% static 'meals/images/meat.png' %}" alt="Logo"></div>
-            <div class="nav-item"><a class="nav-link" href=""><strong>Home</strong></a></div>
+            <img class="nav-logo" src="{% static 'meals/images/meat.png' %}" alt="Logo">
+            <div class="nav-item"><a class="nav-link" href="{% url 'index' %}"><strong>Home</strong></a></div>
             <div class="nav-item"><a class="nav-link" href=""><strong>Meals</strong></a></div>
             <div class="nav-item"><a class="nav-link" href=""><strong>Ingredients</strong></a></div>
             <div class="nav-space"></div>
             {% if user.is_authenticated %}
             <div class="nav-item"><a class="nav-link" href=""><strong>Account</strong></a></div>
-            <div class="nav-item"><a class="nav-link" href=""><strong>Logout</strong></a></div>
+            <div class="nav-item"><a class="nav-link" href="{% url 'logout_user' %}"><strong>Logout</strong></a></div>
             {% else %}
             <div id='register' class="nav-item account"><strong>Register</strong></div>
             <div id='login' class="nav-item account"><strong>Login</strong></div>
             {% endif %}
         </div>
-        <form id="account-form" class="account-form shadow" style="display: none;" method="POST" action="">
-            <label for="email"><b>Email</b></label>
-            <input autofocus  type="text" name="email" placeholder="Email">
+            {% block message %}
+            {% endblock %}
+        <form id="login-form" class="account-form shadow" style="display: none;" method="POST" action="{% url 'login_user' %}">
+            {% csrf_token %}
+            <label for="username"><b>Username</b></label>
+            <input autofocus autocomplete="username" type="text" name="username" placeholder="Username">
             <label for="password"><b>Password</b></label>
-            <input type="password" name="password" placeholder="Password">
-            <input id="account-submit" type="submit" value="Login">
+            <input type="password" autocomplete="current-password" name="password" placeholder="Password">
+            <input type="submit" value="Login">
         </form>
+        <form id="register-form" class="account-form shadow" style="display: none;" method="POST" action="{% url 'register_user' %}">
+            {% csrf_token %}
+            <label for="email" ><b>Email</b></label>
+            <input autofocus autocomplete="email" type="text" name="email" placeholder="Email">
+            <label for="username"><b>Username</b></label>
+            <input autofocus  type="text" autocomplete="username" name="username" placeholder="Username">
+            <label for="password"><b>Password</b></label>
+            <input type="password" autocomplete="new-password" name="password" placeholder="Password">
+            <input type="password" autocomplete="new-password" name="confirmation" placeholder="Confirmation">
+            <input type="submit" value="Register">
+        </form>
+        </div>
         {% block body %}
         {% endblock %}
     </body>

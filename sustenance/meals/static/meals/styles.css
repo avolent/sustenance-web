@@ -2,20 +2,26 @@
 :root {
     --c1: #ffffff;
     --c2: rgb(141, 141, 141);
+    --error: rgba(255, 0, 0, 0.705);
+    --shadow: 3px 5px 3px 3px #ccc;
   }
 
 body {
     margin: 0 0;
     background-color: var(--c1);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px ;
 }
 
 /* Nav Bar */
 #nav-bar {
-    margin: 0 0;
+    margin: 0 0px;
+    padding: 0 10px;
     height: 50px;
     display: flex;
     flex-direction: row;
-    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+    gap: 8px;
 }
 
 .nav-space {
@@ -23,19 +29,14 @@ body {
 }
 
 .nav-logo {
-    display: inherit;
-    padding: 0px 10px;
-}
-
-.nav-logo img {
-    width: auto;
-    height: auto;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .nav-item {
     display: inherit;
     align-items: center;
-    padding: 0px 10px;
+    cursor: pointer;
 }
 
 .nav-link {
@@ -51,14 +52,26 @@ body {
     background-color: var(--c1);
 }
 
-.content {
-    margin: 0.5em 0.5em;
+.account-form input[type=password], input[type=text] {
+    margin-bottom: 4px;
+}
+
+#message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    color: white;
+    background-color: var(--error);
 }
 
 .shadow {
-    -moz-box-shadow:    0px 0px 0px 0px #ccc;
-    -webkit-box-shadow: 0px 0px 0px 0px #ccc;
-    box-shadow:         2px 4px 4px 4px #ccc;
+    -moz-box-shadow:    var(--shadow);
+    -webkit-box-shadow: var(--shadow);
+    box-shadow:         var(--shadow);
 }
 
 /* Content */
+.content {
+    margin: 10px 20px;
+}

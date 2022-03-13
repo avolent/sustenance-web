@@ -1,25 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Script Loaded");
-    let account = document.querySelectorAll(".account")
-    console.log(account);
+    console.log('Script Loaded');
+    let account = document.querySelectorAll('.account')
     account.forEach(btn => btn.addEventListener('click', () => login(btn)));
 });
 
 function login(btn) {
-    console.log(btn.id);
-    form = document.getElementById('account-form');
-    
-    if (btn.id == "login") {
-        form.querySelector('#account-submit').value = "Login";
-        form.action = "login";
+    let forms = document.getElementsByClassName('account-form');
+    let form = forms[`${btn.id}-form`];
+    if (btn.id == 'login') {
+        forms['register-form'].style.display = 'none'
+        if (form.style.display == 'none') {
+            form.style.display = 'flex';
+        } else {
+            form.style.display = 'none';
+        }
     } else {
-        form.querySelector('#account-submit').value = "Register";
-        form.action = "logout";
+        forms['login-form'].style.display = 'none'
+        if (form.style.display != 'none') {
+            form.style.display = 'none';
+        } else {
+            form.style.display = 'flex';
+        }
     }
-    if (form.style.display != "none") {
-        form.style.display = "none";
-    } else {
-        form.style.display = "flex";
-    }
-    console.log(form.action);
 }
