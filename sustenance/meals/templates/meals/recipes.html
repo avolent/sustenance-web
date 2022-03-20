@@ -1,0 +1,41 @@
+{% extends "meals/layout.html" %}
+{% load static %}
+
+{% block title %}
+Recipes
+{% endblock %}
+
+{% block message %}
+{% if message %}
+<div id="message">{{ message }}</div>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Recipes</h1>
+    <div>Add/Edit your own recipes, attach the ingredients and amounts required to make the meal!</div>
+    <div>You currently have x recipes</div>
+    <div>
+        <form id="recipeForm" class="flex-center">
+            <input list="recipes" id="recipesInput" name="recipes" />
+            <datalist id="recipess">
+                <option value="add"></option>
+                <option value="recipes1"></option>
+                <option value="recipes2"></option>
+                <option value="recipes3"></option>
+            </datalist>
+            <div id="recipes">
+                <!-- value changes depending on function required add/edit -->
+                <input type="text" name="function" hidden value="">
+                <input type="number" name="recipeId" hidden value="id">
+                <label for="recipesName">Recipes Name*:</label>
+                <input type="text" name="recipesName" id="recipesName" required>
+                <label for="recipesUnit">Unit of Measurement:</label>
+                <input type="text" name="recipesUnit" id="recipesUnit">
+                <button>add/edit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

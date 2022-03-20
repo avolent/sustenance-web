@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Script Loaded');
+    console.log('script.js Loaded');
     let account = document.querySelectorAll('.account')
     account.forEach(btn => btn.addEventListener('click', () => login(btn)));
 });

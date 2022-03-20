@@ -5,11 +5,25 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .models import User
 
-# Create your views here.
-
+# Returns the index page of the site.
 def index(request):
     return render(request, "meals/index.html")
 
+# Returns the meals page
+def recipes(request):
+    return render(request, "meals/recipes.html")
+
+# Returns the ingredients page
+def ingredients(request):
+    return render(request, "meals/ingredients.html")
+
+# Feed page
+
+# Account page
+
+# APIs
+
+# Login api for user
 def login_user(request):
     if request.method == "POST":
         # Attempt to sign user in
@@ -28,11 +42,12 @@ def login_user(request):
     else:
         return HttpResponseRedirect(reverse("index"))
 
-
+# Logout api for user.
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
+# Register api for user.
 def register_user(request):
     if request.method == "POST":
         email = request.POST["email"]
@@ -57,3 +72,4 @@ def register_user(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return HttpResponseRedirect(reverse("index"))
+

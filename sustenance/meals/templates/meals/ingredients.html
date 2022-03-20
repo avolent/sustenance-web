@@ -1,0 +1,42 @@
+{% extends "meals/layout.html" %}
+{% load static %}
+
+{% block title %}
+Ingredients
+{% endblock %}
+
+{% block message %}
+{% if message %}
+<div id="message">{{ message }}</div>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Ingredients</h1>
+    <div>Add/Edit ingredients in the overall database!</div>
+    <div>There is currently a total of x ingredients in the database.</div>
+    <div>
+        <form id="ingredientForm" class="flex-center" method="POST">
+            <input list="ingredients" id="ingredientInput" name="ingredient" placeholder="Add, update or delete" autocomplete="off"/>
+            <datalist id="ingredients">
+                <option value="add"></option>
+            </datalist>
+            <div id="ingredient" style="display: none;">
+                <!-- value changes depending on function required add/edit -->
+                <input type="text" name="function" hidden value="">
+                <input type="number" name="recipeId" hidden value="">
+                <label for="ingredientName">Ingredient Name*:</label>
+                <input type="text" name="ingredientName" id="ingredientName" required>
+                <label for="ingredientUnit">Unit of Measurement:</label>
+                <input type="text" name="ingredientUnit" id="ingredientUnit">
+                <button>add/edit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'meals/ingredients.js' %}"></script>
+{% endblock %}
