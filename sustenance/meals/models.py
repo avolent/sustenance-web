@@ -6,12 +6,20 @@ class User(AbstractUser):
     def __str__(self):
         return f"ID:{self.id} - {self.username} | {self.email}"
 
-class Ingredient():
-    name = models.CharField(max_length=120)
-    unit = models.CharField(max_length=10, blank=True)
+class Ingredient(models.Model):
+    name = models.CharField(max_length=120, unique=True, blank=False)
+    unit = models.CharField(max_length=10)
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "unit": self.unit
+        }
+    def __str__(self):
+        return f"ID:{self.id} - {self.name}, {self.unit}"
 
-class Recipe():
+class Recipe(models.Model):
     pass
 
-class RecipeIngredient():
+class RecipeIngredient(models.Model):
     pass

@@ -2,7 +2,8 @@
 :root {
     --c1: #ffffff;
     --c2: rgb(141, 141, 141);
-    --error: rgba(255, 0, 0, 0.705);
+    --error: rgba(216, 3, 3, 0.705);
+    --success: green;
     --shadow: 3px 5px 3px 3px #ccc;
   }
 
@@ -60,9 +61,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
     color: white;
-    background-color: var(--error);
 }
 
 .shadow {
@@ -85,4 +84,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+input {
+    margin: 4px;
 }

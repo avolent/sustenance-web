@@ -28,8 +28,8 @@
             <div id='login' class="nav-item account"><strong>Login</strong></div>
             {% endif %}
         </div>
-            {% block message %}
-            {% endblock %}
+        <div id="message">{% block message %}{% endblock %}</div>
+
         <form id="login-form" class="account-form shadow" style="display: none;" method="POST" action="{% url 'login_user' %}">
             {% csrf_token %}
             <label for="username"><b>Username</b></label>

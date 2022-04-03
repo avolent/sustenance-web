@@ -5,34 +5,31 @@
 Ingredients
 {% endblock %}
 
-{% block message %}
-{% if message %}
-<div id="message">{{ message }}</div>
-{% endif %}
-{% endblock %}
-
 {% block body %}
 <div class="content">
     <h1>Ingredients</h1>
-    <div>Add/Edit ingredients in the overall database!</div>
-    <div>There is currently a total of x ingredients in the database.</div>
-    <div>
-        <form id="ingredientForm" class="flex-center" method="POST">
-            <input list="ingredients" id="ingredientInput" name="ingredient" placeholder="Add, update or delete" autocomplete="off"/>
-            <datalist id="ingredients">
-                <option value="add"></option>
-            </datalist>
-            <div id="ingredient" style="display: none;">
-                <!-- value changes depending on function required add/edit -->
-                <input type="text" name="function" hidden value="">
-                <input type="number" name="recipeId" hidden value="">
-                <label for="ingredientName">Ingredient Name*:</label>
-                <input type="text" name="ingredientName" id="ingredientName" required>
-                <label for="ingredientUnit">Unit of Measurement:</label>
-                <input type="text" name="ingredientUnit" id="ingredientUnit">
-                <button>add/edit</button>
-            </div>
-        </form>
+    <div>Create/Edit ingredients in the overall database!</div>
+    <div>There is currently a total of <b id="ingredientsCount">{{ ingredients.count }}</b> ingredients in the database.</div>
+    <input class="form-control" list="datalistOptions" id="ingredientSelection" onfocus="this.value='';" placeholder="create, update or delete." autocomplete="off">
+    <datalist id="datalistOptions">
+        <option id="create" value="Create"></option>
+    </datalist>
+    <div id="ingredientAdd", style="display: none;">
+        <input type="number" class="id" id="idAdd" hidden>
+        <label for="nameAdd">Ingredient*: </label>
+        <input type="text" required class="name" id="nameAdd" autocomplete="off">
+        <label for="unitAdd">Unit: </label>
+        <input type="text" class="unit" id="unitAdd" autocomplete="off">
+        <button class="button" id="add" value="add">Add</button>
+    </div>
+    <div id="ingredientEdit", style="display: none;">
+        <input type="number" class="id" id="idEdit" hidden>
+        <label for="nameEdit">Ingredient*: </label>
+        <input type="text" required class="name" id="nameEdit" autocomplete="off">
+        <label for="unitEdit">Unit: </label>
+        <input type="text" class="unit" id="unitEdit" autocomplete="off">
+        <button class="button" id="edit" value="edit">Edit</button>
+        <button class="button" id="delete" value="delete">Delete</button>
     </div>
 </div>
 {% endblock %}
