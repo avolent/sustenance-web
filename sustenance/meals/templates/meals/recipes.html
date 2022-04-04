@@ -15,27 +15,48 @@ Recipes
 <div class="content">
     <h1>Recipes</h1>
     <div>Add/Edit your own recipes, attach the ingredients and amounts required to make the meal!</div>
-    <div>You currently have x recipes</div>
-    <input class="form-control" list="datalistOptions" id="recipeSelection" onfocus="this.value='';" placeholder="create, update or delete." autocomplete="off">
+    <div>You currently have <b id="recipesCount">{{ recipes.count }}</b> recipes</div>
+    <input class="form-control" list="datalistOptions" id="recipeSelection" onfocus="this.value='';" placeholder="Create, update or delete." autocomplete="off">
     <datalist id="datalistOptions">
-        <option id="create" value="Create"></option>
+        <option id="Create" value="Create"></option>
     </datalist>
     <div id="recipeAdd", style="display: none;">
         <input type="number" class="id" id="idAdd" hidden>
         <label for="nameAdd">Recipe*: </label>
         <input type="text" required class="name" id="nameAdd" autocomplete="off">
-        <label for="unitAdd">Unit: </label>
-        <input type="text" class="unit" id="unitAdd" autocomplete="off">
+        <label for="unitAdd">Link: </label>
+        <input type="text" class="link" id="LinkAdd" autocomplete="off">
         <button class="button" id="add" value="add">Add</button>
     </div>
     <div id="recipeEdit", style="display: none;">
         <input type="number" class="id" id="idEdit" hidden>
-        <label for="nameEdit">Ingredient*: </label>
-        <input type="text" required class="name" id="nameEdit" autocomplete="off">
-        <label for="unitEdit">Unit: </label>
-        <input type="text" class="unit" id="unitEdit" autocomplete="off">
+        <h2 class="name" id="nameEdit"></h2>
+        <a class="link" id="linkEdit">Link</a>
+        <h3>Ingredients</h3>
+        <div><table><tr><th>Name</th><th>Quantity</th></tr></table></div>
         <button class="button" id="edit" value="edit">Edit</button>
         <button class="button" id="delete" value="delete">Delete</button>
+        <div id="ingredientAdd", style="display: none;">
+            <input type="number" class="id" id="idAdd" hidden>
+            <label for="nameAdd">Ingredient*: </label>
+            <input type="text" required class="name" id="nameAdd" autocomplete="off">
+            <label for="unitAdd">Unit: </label>
+            <input type="text" class="unit" id="unitAdd" autocomplete="off">
+            <button class="button" id="add" value="add">Add</button>
+        </div>
+        <div id="ingredientEdit", style="display: none;">
+            <input type="number" class="id" id="idEdit" hidden>
+            <label for="nameEdit">Ingredient*: </label>
+            <input type="text" required class="name" id="nameEdit" autocomplete="off">
+            <label for="unitEdit">Unit: </label>
+            <input type="text" class="unit" id="unitEdit" autocomplete="off">
+            <button class="button" id="edit" value="edit">Edit</button>
+            <button class="button" id="delete" value="delete">Delete</button>
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'meals/recipes.js' %}"></script>
 {% endblock %}

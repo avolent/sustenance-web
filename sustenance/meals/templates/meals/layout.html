@@ -28,7 +28,7 @@
             <div id='login' class="nav-item account"><strong>Login</strong></div>
             {% endif %}
         </div>
-        <div id="message">{% block message %}{% endblock %}</div>
+        <div class="shadow" id="message"></div>
 
         <form id="login-form" class="account-form shadow" style="display: none;" method="POST" action="{% url 'login_user' %}">
             {% csrf_token %}

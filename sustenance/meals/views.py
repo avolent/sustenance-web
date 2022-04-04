@@ -14,7 +14,40 @@ def index(request):
 
 # Returns the meals page
 def recipes_view(request):
-    return render(request, "meals/recipes.html")
+    recipes = Recipe.objects.order_by("name").filter(created_by=request.user)
+    if request.method == "POST":
+        data = json.loads(request.body)
+        print(data)
+        if data.get("action") == "pull":
+            if data.get("recipe") == "all":
+                print(recipes)
+                return JsonResponse([recipe.serialize() for recipe in recipes], safe=False, status=201)
+            else:
+                name = data.get("recipe")
+                try:
+                    recipe = Recipe.objects.get(name=name)
+                    print(recipe.ingredients.all())
+                    return JsonResponse(recipe.serialize(), status=201)
+                except Exception as error:
+                    return JsonResponse({"message": error}, status=400)
+        else:
+            id = data.get("id")
+            name = data.get("name").capitalize()
+            if not name:
+                return JsonResponse({"message": f"Recipe name can't be blank"}, status=400)
+            link = data.get("link").lower()
+            if data.get("action") == "add":
+                try:
+                    print(name)
+                    recipe = Recipe(name=name, link=link, created_by=request.user)
+                    recipe.save()
+                    return JsonResponse({"message": f"Recipe {name} successfully added."}, status=201)
+                except IntegrityError:
+                    return JsonResponse({"message": f"Recipe {name} already exists!"}, status=400)
+    else:
+        return render(request, "meals/recipes.html", {
+            "recipes": recipes,
+        })
 
 # Returns the ingredients page
 def ingredients_view(request):
@@ -31,29 +64,35 @@ def ingredients_view(request):
                 try:
                     ingredient = Ingredient.objects.get(name=name)
                     return JsonResponse(ingredient.serialize())
-                except:
-                    return JsonResponse({"message": f"Ingredient {name} does not exists!"}, status=400)
+                except Exception as error:
+                    return JsonResponse({"message": error}, status=400)
         else:
             id = data.get("id")
-            name = data.get("name").lower()
+            name = data.get("name").capitalize()
+            if not name:
+                return JsonResponse({"message": f"Ingredient name can't be blank"}, status=400)
             unit = data.get("unit").lower()
             if data.get("action") == "add":
                 try:
+                    print(name)
                     ingredient = Ingredient(name=name, unit=unit)
                     ingredient.save()
                     return JsonResponse({"message": f"Ingredient {name} successfully added."}, status=201)
-                except:
-                    return JsonResponse({"message": f"Ingredient {name} already exists"}, status=400)
+                except IntegrityError:
+                    return JsonResponse({"message": f"Ingredient {name} already exists!"}, status=400)
             elif data.get("action") == "delete":
                 ingredient = Ingredient.objects.get(id=id)
                 ingredient.delete()
                 return JsonResponse({"message": f"Ingredient {ingredient.name} successfully deleted."}, status=201)
             elif data.get("action") == "edit":
-                ingredient = Ingredient.objects.get(id=id)
-                ingredient.name = name
-                ingredient.unit = unit
-                ingredient.save()
-                return JsonResponse({"message": f"Ingredient {name} successfully edited."}, status=201)
+                try:
+                    ingredient = Ingredient.objects.get(id=id)
+                    ingredient.name = name
+                    ingredient.unit = unit
+                    ingredient.save()
+                    return JsonResponse({"message": f"Ingredient {name} successfully edited."}, status=201)
+                except IntegrityError:
+                    return JsonResponse({"message": f"Ingredient {name} already exists!"}, status=400)
     else:
         return render(request, "meals/ingredients.html", {
             "ingredients": ingredients

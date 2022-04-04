@@ -10,6 +10,7 @@ function editIngredient(event) {
     const csrftoken = Cookies.get('csrftoken');
     const action = event.target.value;
     const ingredientForm = event.target.parentElement;
+    let message = document.querySelector('#message')
     let id = ingredientForm.querySelector('.id').value;
     let name = ingredientForm.querySelector('.name').value;
     let unit = ingredientForm.querySelector('.unit').value;
@@ -23,12 +24,27 @@ function editIngredient(event) {
             unit: unit
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw response.json();
+          }
+        return response.json();
+    })
+    // If response ok, reset ui and update success message
     .then(result => {
         console.log(result)
         pullIngredients('all');
         ingredientForm.style.display = 'none'
         document.querySelector('#ingredientSelection').value = '';
+        message.style.backgroundColor = 'var(--success)';
+        message.innerHTML = result.message;
+    })
+    // If response not ok, update message with error.
+    .catch(error => {
+        error.then(result => {
+            message.style.backgroundColor = 'var(--error)';
+            message.innerHTML = result.message;
+        })
     })
 }
 
@@ -49,7 +65,7 @@ function pullIngredients(ingredient) {
             if (ingredient == "all") {
                 document.querySelector('#ingredientsCount').innerHTML = result.length;
                 let options = document.querySelector('#datalistOptions')
-                options.innerHTML = '<option id="create" value="create"></option>'
+                options.innerHTML = '<option id="Create" value="Create"></option>'
                 result.forEach((ingredient) => {
                     options.innerHTML += `<option id='${ingredient.name}' value='${ingredient.name}'>`;
                 })
@@ -61,9 +77,11 @@ function pullIngredients(ingredient) {
 
 async function itemList(event) {
     event.target.blur();
+    document.querySelector('#message').innerHTML = '';
     let ingredient = event.target.value;
+    console.log(ingredient)
     if (document.querySelector('#datalistOptions').options.namedItem(ingredient)) {
-        if (ingredient == 'create') {
+        if (ingredient == 'Create') {
             const ingredientForm = document.querySelector('#ingredientAdd');
             ingredientForm.querySelector('.id').value = '';
             ingredientForm.querySelector('.name').value = '';

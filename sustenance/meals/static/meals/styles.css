@@ -62,6 +62,7 @@ body {
     align-items: center;
     justify-content: center;
     color: white;
+    background-color: var(--error);
 }
 
 .shadow {
@@ -88,4 +89,19 @@ body {
 
 input {
     margin: 4px;
+}
+
+/* Recipe stuff */
+
+#recipeAdd {
+    flex-direction: column;
+    margin: 10px;
+    align-items: center;
+
+}
+
+#recipeEdit {
+    flex-direction: column;
+    margin: 10px;
+    align-items: center;
 }
