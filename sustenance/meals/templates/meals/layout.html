@@ -17,19 +17,19 @@
         <div id="nav-bar" class="shadow">
             <img class="nav-logo" src="{% static 'meals/images/meat.png' %}" alt="Logo">
             <div class="nav-item"><a class="nav-link" href="{% url 'index' %}"><strong>Home</strong></a></div>
+            {% if user.is_authenticated %}
             <div class="nav-item"><a class="nav-link" href="{% url 'recipes' %}"><strong>Recipes</strong></a></div>
             <div class="nav-item"><a class="nav-link" href="{% url 'ingredients' %}"><strong>Ingredients</strong></a></div>
             <div class="nav-space"></div>
-            {% if user.is_authenticated %}
-            <div class="nav-item"><a class="nav-link" href=""><strong>Account</strong></a></div>
+            <div class="nav-item"><strong>{{user.username}}</strong></div>
             <div class="nav-item"><a class="nav-link" href="{% url 'logout_user' %}"><strong>Logout</strong></a></div>
             {% else %}
+            <div class="nav-space"></div>
             <div id='register' class="nav-item account"><strong>Register</strong></div>
             <div id='login' class="nav-item account"><strong>Login</strong></div>
             {% endif %}
         </div>
         <div class="shadow" id="message"></div>
-
         <form id="login-form" class="account-form shadow" style="display: none;" method="POST" action="{% url 'login_user' %}">
             {% csrf_token %}
             <label for="username"><b>Username</b></label>
@@ -50,6 +50,11 @@
             <input type="submit" value="Register">
         </form>
         </div>
+        {% block message %}
+        {% if message %}
+        <div id="message">{{ message }}</div>
+        {% endif %}
+        {% endblock %}
         {% block body %}
         {% endblock %}
     </body>

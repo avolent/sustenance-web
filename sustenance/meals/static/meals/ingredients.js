@@ -40,8 +40,8 @@ function editIngredient(event) {
         message.innerHTML = result.message;
     })
     // If response not ok, update message with error.
-    .catch(error => {
-        error.then(result => {
+    .catch(err => {
+        err.then(result => {
             message.style.backgroundColor = 'var(--error)';
             message.innerHTML = result.message;
         })
@@ -79,7 +79,7 @@ async function itemList(event) {
     event.target.blur();
     document.querySelector('#message').innerHTML = '';
     let ingredient = event.target.value;
-    console.log(ingredient)
+    // console.log(ingredient)
     if (document.querySelector('#datalistOptions').options.namedItem(ingredient)) {
         if (ingredient == 'Create') {
             const ingredientForm = document.querySelector('#ingredientAdd');

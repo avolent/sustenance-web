@@ -21,13 +21,13 @@ def recipes_view(request):
         if data.get("action") == "pull":
             if data.get("recipe") == "all":
                 print(recipes)
-                return JsonResponse([recipe.serialize() for recipe in recipes], safe=False, status=201)
+                return JsonResponse([recipe.serialize() for recipe in recipes], safe=False, status=200)
             else:
                 name = data.get("recipe")
                 try:
                     recipe = Recipe.objects.get(name=name)
                     print(recipe.ingredients.all())
-                    return JsonResponse(recipe.serialize(), status=201)
+                    return JsonResponse(recipe.serialize(), status=200)
                 except Exception as error:
                     return JsonResponse({"message": error}, status=400)
         else:
@@ -35,15 +35,39 @@ def recipes_view(request):
             name = data.get("name").capitalize()
             if not name:
                 return JsonResponse({"message": f"Recipe name can't be blank"}, status=400)
-            link = data.get("link").lower()
             if data.get("action") == "add":
+                link = data.get("link").lower()
                 try:
                     print(name)
                     recipe = Recipe(name=name, link=link, created_by=request.user)
                     recipe.save()
-                    return JsonResponse({"message": f"Recipe {name} successfully added."}, status=201)
+                    return JsonResponse({"message": f"Recipe {name} successfully added."}, status=200)
                 except IntegrityError:
                     return JsonResponse({"message": f"Recipe {name} already exists!"}, status=400)
+            if data.get("action") == "delete":
+                try:
+                    print(id)
+                    recipe = recipe = Recipe.objects.get(id=id)
+                    recipe.delete()
+                    return JsonResponse({"message": f"Recipe {name} successfully deleted."}, status=200)
+                except IntegrityError:
+                    return JsonResponse({"message": f"Recipe {name} already exists!"}, status=400)
+            if data.get("action") == "save":
+                print(id)
+                recipe = Recipe.objects.get(id=id)
+                ingredients = data.get("ingredients")
+                print(ingredients)
+                for ingredient in ingredients:
+                    ingre = Ingredient.objects.get(name=ingredient["name"])
+                    if RecipeIngredient.objects.filter(recipe=recipe, ingredient=ingre).exists():
+                        recipeingredient = RecipeIngredient.objects.get(recipe=recipe, ingredient=ingre)
+                        recipeingredient.quantity = ingredient["quantity"]
+                    else:
+                        recipeingredient = RecipeIngredient(recipe=recipe, ingredient=ingre, quantity=ingredient["quantity"])
+                    recipeingredient.save()
+                print(recipe.ingredients.all())
+                return JsonResponse({"message": f"Recipe {name} successfully edited."}, status=200)
+                    
     else:
         return render(request, "meals/recipes.html", {
             "recipes": recipes,
@@ -77,32 +101,26 @@ def ingredients_view(request):
                     print(name)
                     ingredient = Ingredient(name=name, unit=unit)
                     ingredient.save()
-                    return JsonResponse({"message": f"Ingredient {name} successfully added."}, status=201)
+                    return JsonResponse({"message": f"Ingredient {name} successfully added."}, status=200)
                 except IntegrityError:
                     return JsonResponse({"message": f"Ingredient {name} already exists!"}, status=400)
             elif data.get("action") == "delete":
                 ingredient = Ingredient.objects.get(id=id)
                 ingredient.delete()
-                return JsonResponse({"message": f"Ingredient {ingredient.name} successfully deleted."}, status=201)
+                return JsonResponse({"message": f"Ingredient {ingredient.name} successfully deleted."}, status=200)
             elif data.get("action") == "edit":
                 try:
                     ingredient = Ingredient.objects.get(id=id)
                     ingredient.name = name
                     ingredient.unit = unit
                     ingredient.save()
-                    return JsonResponse({"message": f"Ingredient {name} successfully edited."}, status=201)
+                    return JsonResponse({"message": f"Ingredient {name} successfully edited."}, status=200)
                 except IntegrityError:
                     return JsonResponse({"message": f"Ingredient {name} already exists!"}, status=400)
     else:
         return render(request, "meals/ingredients.html", {
             "ingredients": ingredients
         })
-
-# Feed page
-
-# Account page
-
-# APIs
 
 # Login api for user
 def login_user(request):
@@ -111,7 +129,7 @@ def login_user(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-
+        print(user)
         # Check if authentication successful
         if user is not None:
             login(request, user)
@@ -132,7 +150,7 @@ def logout_user(request):
 def register_user(request):
     if request.method == "POST":
         email = request.POST["email"]
-
+        username = request.POST["username"]
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
@@ -140,17 +158,15 @@ def register_user(request):
             return render(request, "meals/index.html", {
                 "message": "Passwords must match."
             })
-
         # Attempt to create new user
         try:
-            user = User.objects.create_user(email, password)
+            user = User.objects.create_user(username=username, password=password, email=email)
             user.save()
         except IntegrityError:
             return render(request, "meals/index.html", {
-                "message": "Email already taken."
+                "message": "Email/Username already taken."
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
         return HttpResponseRedirect(reverse("index"))
-

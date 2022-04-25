@@ -14,6 +14,10 @@ body {
     font-size: 14px ;
 }
 
+button {
+    margin: 2px;
+}
+
 /* Nav Bar */
 #nav-bar {
     margin: 0 0px;
@@ -103,5 +107,20 @@ input {
 #recipeEdit {
     flex-direction: column;
     margin: 10px;
+    align-items: center;
+}
+
+#recipeEdit .ingredient {
+    display: flex;
+    flex-direction: row;
+}
+
+.ingredient div {
+    padding: 2px 4px;
+}
+
+#ingredientAdd {
+    margin: 5px;
+    flex-direction: column;
     align-items: center;
 }

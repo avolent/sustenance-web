@@ -5,11 +5,6 @@
 Recipes
 {% endblock %}
 
-{% block message %}
-{% if message %}
-<div id="message">{{ message }}</div>
-{% endif %}
-{% endblock %}
 
 {% block body %}
 <div class="content">
@@ -20,7 +15,7 @@ Recipes
     <datalist id="datalistOptions">
         <option id="Create" value="Create"></option>
     </datalist>
-    <div id="recipeAdd", style="display: none;">
+    <div id="recipeAdd" style="display: none;">
         <input type="number" class="id" id="idAdd" hidden>
         <label for="nameAdd">Recipe*: </label>
         <input type="text" required class="name" id="nameAdd" autocomplete="off">
@@ -28,30 +23,25 @@ Recipes
         <input type="text" class="link" id="LinkAdd" autocomplete="off">
         <button class="button" id="add" value="add">Add</button>
     </div>
-    <div id="recipeEdit", style="display: none;">
+    <div id="recipeEdit" style="display: none;">
+        <button class="button" id="edit" value="edit">Edit</button>
+        <button class="button" id="delete" value="delete">Delete</button>
         <input type="number" class="id" id="idEdit" hidden>
         <h2 class="name" id="nameEdit"></h2>
         <a class="link" id="linkEdit">Link</a>
         <h3>Ingredients</h3>
-        <div><table><tr><th>Name</th><th>Quantity</th></tr></table></div>
-        <button class="button" id="edit" value="edit">Edit</button>
-        <button class="button" id="delete" value="delete">Delete</button>
-        <div id="ingredientAdd", style="display: none;">
-            <input type="number" class="id" id="idAdd" hidden>
-            <label for="nameAdd">Ingredient*: </label>
-            <input type="text" required class="name" id="nameAdd" autocomplete="off">
-            <label for="unitAdd">Unit: </label>
-            <input type="text" class="unit" id="unitAdd" autocomplete="off">
-            <button class="button" id="add" value="add">Add</button>
+        <div class="ingredientList">
         </div>
-        <div id="ingredientEdit", style="display: none;">
-            <input type="number" class="id" id="idEdit" hidden>
-            <label for="nameEdit">Ingredient*: </label>
-            <input type="text" required class="name" id="nameEdit" autocomplete="off">
-            <label for="unitEdit">Unit: </label>
-            <input type="text" class="unit" id="unitEdit" autocomplete="off">
-            <button class="button" id="edit" value="edit">Edit</button>
-            <button class="button" id="delete" value="delete">Delete</button>
+        <div id="ingredientAdd" style="display: none;">
+            <label for="ingredientSelection">Ingredient:</label>
+            <input class="form-control" list="ingredientdatalistOptions" id="ingredientSelection" onfocus="this.value='';" placeholder="Create, update or delete." autocomplete="off">
+            <datalist id="ingredientdatalistOptions">
+            </datalist>
+            <input type="number" class="id" id="idAdd" hidden>
+            <label for="QuantityAdd">Quantity:</label>
+            <input type="number" class="quantity" id="QuantityAdd" required autocomplete="off">
+            <button class="ingredientButton" id="edit" value="edit">Edit</button>
+            <button class="ingredientButton" id="delete" value="delete">Delete</button>
         </div>
     </div>
 </div>

@@ -4,11 +4,6 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class User(AbstractUser):
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.username,
-        }
     def __str__(self):
         return f"ID:{self.id} - {self.username} | {self.email}"
 
@@ -47,9 +42,11 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE, related_name="ingredients")
     ingredient = models.ForeignKey("Ingredient", on_delete=models.CASCADE, related_name="recipes")
-    quantity = models.IntegerField(null=False)
+    quantity = models.IntegerField(null=False, blank=False)
     def serialize(self):
         return {
+            "id": self.id,
+            "ingredientId": self.ingredient.id,
             "ingredient": self.ingredient.name,
             "quantity": self.quantity,
             "unit": self.ingredient.unit
