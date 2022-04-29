@@ -1,0 +1,48 @@
+{% extends "meals/layout.html" %}
+{% load static %}
+
+{% block title %}
+Sustenance
+{% endblock %}
+
+{% block message %}
+{% if message %}
+<div id="message">{{ message }}</div>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>History</h1>
+    <p>Your previously generated shopping lists!</p>
+    <div class="history flex-center">
+        {% for x in history %}
+        <div class="generated flex-center" id="1">
+            <div><b>{{ x.date_generated }}</b></div>
+            <div><h4>Meal List</h4></div>
+            <div id="mealList">
+                {% for meal in x.meals %}
+                <div class="mealName">{{ meal }} </div>
+                {% endfor %}
+            </div>
+            <div><h4>Shopping List</h4></div>
+            <div id="shoppingList">
+                {% for item in x.shopping_list %}
+                <div class="ingredient">
+                    <div><input type="checkbox"></div>
+                    <div class="ingredientName">{{ item.name }}:</div>
+                    <div class="ingredientQuantity">{{ item.quantity }}</div>
+                    <div class=ingredientUnit></div>{{ item.unit }}</div>
+
+                {% endfor %}
+            </div>
+            
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'meals/history.js' %}"></script>
+{% endblock %}

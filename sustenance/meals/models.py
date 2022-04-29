@@ -54,3 +54,16 @@ class RecipeIngredient(models.Model):
     def __str__(self):
         return f"{self.ingredient.name}: {self.quantity}{self.ingredient.unit}"
 
+class History(models.Model):
+    meals = models.JSONField()
+    shopping_list = models.JSONField()
+    date_generated = models.DateTimeField(auto_now_add=True)
+    generated_by = models.ForeignKey("User", on_delete=models.CASCADE, related_name="history")
+    def serialize(self):
+        return {
+            "id": self.id,
+            "meals": self.meals,
+            "shopping_list": self.shopping_list,
+            "date_generated": self.date_generated,
+            "generated_by": self.generated_by
+        }

@@ -116,11 +116,38 @@ input {
 }
 
 .ingredient div {
-    padding: 2px 4px;
+    padding: 2px 2px;
+}
+
+.ingredient .ingredientName {
+    font-weight: bold;
+
 }
 
 #ingredientAdd {
     margin: 5px;
     flex-direction: column;
     align-items: center;
+}
+
+/* Index Page */
+#shoppingList .ingredient {
+    display: flex;
+    align-items: center;
+
+}
+
+#mealList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* History Page */
+
+.generated {
+    margin-top: 20px;
+}
+.generated .mealName {
+    margin: 0px;
 }

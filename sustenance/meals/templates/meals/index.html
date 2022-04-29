@@ -1,4 +1,5 @@
 {% extends "meals/layout.html" %}
+{% load static %}
 
 {% block title %}
 Sustenance
@@ -13,5 +14,27 @@ Sustenance
 {% block body %}
 <div class="content">
     <h1>Sustenance</h1>
+    <p>This is Sustenance, create and generate your recipes into weekly shopping lists.</p>
+    <div class="flex-center">
+        <div>Generate Shopping List</div>
+        <div>
+            <input id="mealCountInput" type="range" id="volume" name="volume" min="1" max="7">
+        </div>
+        <div id="mealCount">4</div>
+        <div><button id="generate">Generate</button></div>
+    </div>
+    <div class="generated flex-center">
+        <div><h2>Meal List</h2></div>
+        <div id="mealList"></div>
+        <div><h2>Shopping List</h2></div>
+        <div id="shoppingList"></div>
+    </div>
+    <div id="historylist">
+        
+    </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'meals/index.js' %}"></script>
 {% endblock %}

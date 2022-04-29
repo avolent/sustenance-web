@@ -1,16 +1,45 @@
 from email import message
 import json
+import random
 from attr import fields
 from django.shortcuts import render
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from .models import User, Ingredient, Recipe, RecipeIngredient
+from .models import User, Ingredient, Recipe, RecipeIngredient, History
 
 # Returns the index page of the site.
 def index(request):
+    if request.method == "POST":
+        recipes = Recipe.objects.order_by("name").filter(created_by=request.user)
+        print("Generating")
+        data = json.loads(request.body)
+        count = int(data.get("count"))
+        if len(recipes) < count:
+            return JsonResponse({"message": "Not enough recipes to generate!"}, status=400)
+        recipe_selection = random.sample(list(recipes), count)
+        return JsonResponse([recipe.serialize() for recipe in recipe_selection], safe=False, status=200)
     return render(request, "meals/index.html")
+
+def history(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        meals = data.get("meals")
+        shoppinglist = data.get("shoppinglist")
+        action = data.get("action")
+        print(shoppinglist)
+        history = History(meals=meals, shopping_list=shoppinglist, generated_by=request.user)
+        history.save()
+        return JsonResponse({"message": "Shopping List generated and added to history!"}, status=200)
+    else:
+        history = History.objects.order_by("-date_generated").filter(generated_by=request.user)
+        for x in history:
+            print(x.meals)
+        return render(request, "meals/history.html", {
+            "history": history,
+        })
+
 
 # Returns the meals page
 def recipes_view(request):
@@ -47,7 +76,7 @@ def recipes_view(request):
             if data.get("action") == "delete":
                 try:
                     print(id)
-                    recipe = recipe = Recipe.objects.get(id=id)
+                    recipe = Recipe.objects.get(id=id)
                     recipe.delete()
                     return JsonResponse({"message": f"Recipe {name} successfully deleted."}, status=200)
                 except IntegrityError:
@@ -66,8 +95,7 @@ def recipes_view(request):
                         recipeingredient = RecipeIngredient(recipe=recipe, ingredient=ingre, quantity=ingredient["quantity"])
                     recipeingredient.save()
                 print(recipe.ingredients.all())
-                return JsonResponse({"message": f"Recipe {name} successfully edited."}, status=200)
-                    
+                return JsonResponse({"message": f"Recipe {name} successfully edited."}, status=200)          
     else:
         return render(request, "meals/recipes.html", {
             "recipes": recipes,
