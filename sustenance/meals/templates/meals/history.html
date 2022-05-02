@@ -14,12 +14,12 @@ Sustenance
 {% block body %}
 <div class="content">
     <h1>History</h1>
-    <p>Your previously generated shopping lists!</p>
+    <p>Your previously generated shopping lists! (Limited to the last 20 generations)</p>
     <div class="history flex-center">
-        {% for x in history %}
+        {% for x in page_obj %}
         <div class="generated flex-center" id="1">
-            <div><b>{{ x.date_generated }}</b></div>
-            <div><h4>Meal List</h4></div>
+            <div id="dateGenerated"><u><b>{{ x.date_generated }}</b></u></div>
+            <div id="mealListtitle"><h4>Meal List</h4></div>
             <div id="mealList">
                 {% for meal in x.meals %}
                 <div class="mealName">{{ meal }} </div>
@@ -33,16 +33,27 @@ Sustenance
                     <div class="ingredientName">{{ item.name }}:</div>
                     <div class="ingredientQuantity">{{ item.quantity }}</div>
                     <div class=ingredientUnit></div>{{ item.unit }}</div>
-
                 {% endfor %}
             </div>
-            
         </div>
         {% endfor %}
     </div>
 </div>
-{% endblock %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
-{% block script %}
-<script src="{% static 'meals/history.js' %}"></script>
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

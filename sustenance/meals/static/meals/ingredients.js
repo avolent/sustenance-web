@@ -1,3 +1,4 @@
+// Wait for page to load and the add event listeners to buttons.
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('ingredients.js Loaded');
     await pullIngredients('all');
@@ -5,8 +6,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.querySelectorAll('.button').forEach((button) => button.addEventListener('click', (event) => editIngredient(event)));
 });
 
-// Function for ingredient editing
+// Function for ingredient editing, initiated by the click of the edit ingredient button.
 function editIngredient(event) {
+    // Set/grab off page all variables for later use.
     const csrftoken = Cookies.get('csrftoken');
     const action = event.target.value;
     const ingredientForm = event.target.parentElement;
@@ -48,6 +50,7 @@ function editIngredient(event) {
     })
 }
 
+// Pull all current ingredients avaible
 function pullIngredients(ingredient) {
     return new Promise((resolve, reject) => {
         const csrftoken = Cookies.get('csrftoken')
@@ -62,6 +65,7 @@ function pullIngredients(ingredient) {
         .then(response => response.json())
         .then(result => {
             console.log(result);
+            // If request is for "all", Pull them all and display on page. Otherwise grab individual ingredient data.
             if (ingredient == "all") {
                 document.querySelector('#ingredientsCount').innerHTML = result.length;
                 let options = document.querySelector('#datalistOptions')
@@ -75,12 +79,16 @@ function pullIngredients(ingredient) {
     });
 }
 
+// Function for updating the UI when Create or an ingredient is selected for updating.
 async function itemList(event) {
+    // blue the datalist input on event activation (change)
     event.target.blur();
     document.querySelector('#message').innerHTML = '';
     let ingredient = event.target.value;
     // console.log(ingredient)
+    // Check if the option exists in the datalist.
     if (document.querySelector('#datalistOptions').options.namedItem(ingredient)) {
+        // If it is create show blank add form.
         if (ingredient == 'Create') {
             const ingredientForm = document.querySelector('#ingredientAdd');
             ingredientForm.querySelector('.id').value = '';
@@ -88,6 +96,7 @@ async function itemList(event) {
             ingredientForm.querySelector('.unit').value = '';
             document.querySelector('#ingredientEdit').style.display = 'none';
             ingredientForm.style.display = 'block';
+        // else update form with selected ingredient details
         } else {
             let ingredientData = await pullIngredients(ingredient);
             const ingredientForm = document.querySelector('#ingredientEdit');
@@ -98,6 +107,7 @@ async function itemList(event) {
             ingredientForm.style.display = 'block';
         }
     } else {
+        // If option not in list hide both divs.
         document.querySelector('#ingredientEdit').style.display = 'none';
         document.querySelector('#ingredientAdd').style.display = 'none';
     };

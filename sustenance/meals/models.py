@@ -67,3 +67,5 @@ class History(models.Model):
             "date_generated": self.date_generated,
             "generated_by": self.generated_by
         }
+    def __str__(self):
+        return f"{self.id}: {self.date_generated} - {self.generated_by.username}"

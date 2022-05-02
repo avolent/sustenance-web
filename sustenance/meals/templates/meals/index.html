@@ -13,10 +13,16 @@ Sustenance
 
 {% block body %}
 <div class="content">
+    <div id="summary">
     <h1>Sustenance</h1>
-    <p>This is Sustenance, create and generate your recipes into weekly shopping lists.</p>
-    <div class="flex-center">
-        <div>Generate Shopping List</div>
+    <div id="description">This is Sustenance, create and generate your recipes into weekly shopping lists.<br>
+        The goal of this website is to reduce the amount of time at the shops trying to think of things to cook and then all the ingredients required to cook these.<br>
+        An account is required and after logging in you can start create meals from a pool of ingredients or adding your own.
+    </div>
+    </div>
+    {% if user.is_authenticated %}
+    <div class="flex-center" id="generator">
+        <h2>Generate Shopping List</h2>
         <div>
             <input id="mealCountInput" type="range" id="volume" name="volume" min="1" max="7">
         </div>
@@ -24,17 +30,17 @@ Sustenance
         <div><button id="generate">Generate</button></div>
     </div>
     <div class="generated flex-center">
-        <div><h2>Meal List</h2></div>
+        <div><h3>Meal List</h3></div>
         <div id="mealList"></div>
-        <div><h2>Shopping List</h2></div>
+        <div><h3>Shopping List</h3></div>
         <div id="shoppingList"></div>
     </div>
     <div id="historylist">
         
     </div>
+    {% endif %}
 </div>
 {% endblock %}
-
 {% block script %}
 <script src="{% static 'meals/index.js' %}"></script>
 {% endblock %}
