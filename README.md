@@ -2,6 +2,8 @@
 My CS50 Web Capstone Project.
 https://cs50.harvard.edu/web/2020/projects/final/capstone/
 
+Youtube Video - https://youtu.be/hm-lY72mOCs
+
 ## Description
 This project is what I call Sustenence. The goal of this project is to simplify the process of choosing meals to eat each week and then have to mentally organise these meals into a shopping list. This app does this all for you, it will take the meal count you select then return the same amount of meals (No duplicates) and a shopping list with the total amount of ingredients required. So if you have one meal which requires 20 mls of milk and then another which requires 50, these will summed up and shown as a total in the end shopping list. You can then just check off each item when you are a next at the shops and not have to worry about forgetting an ingredients. This should in turn reduce that amount of time and useless purchases when at the shop. The ingredients are crowd source pooled so all users can see any of the ingredients listed in the database, hopefully this saving time on having to create every single ingredient. Recipes are then only for each user and can not be seen by others. Upon generating a shopping list, it is saved to the history and you are then able to see previous generations on the history. This is limited to 20 history entries as it is only intended to be for incase you refresh or need to check a previous generation.
 
